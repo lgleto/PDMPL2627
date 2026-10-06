@@ -30,10 +30,8 @@ fun CalculatorView(
 ){
 
     var displayText by remember { mutableStateOf("0") }
-    var operand by remember { mutableStateOf(0.0) }
-    var operation by remember { mutableStateOf<String?>(null) }
+    var calculatorBrain by remember { mutableStateOf(CalculatorBrain()) }
     var userIsInTheMiddleOfIntroduction by remember { mutableStateOf(false) }
-
 
     val numPressed : (String)-> Unit = { num ->
 
@@ -59,22 +57,25 @@ fun CalculatorView(
 
     val opPressed : (String)-> Unit = { op ->
 
-
-        when(operation){
-            "+" -> {
-                displayText = "${operand + displayText.toDouble()}"
-            }
-            "-" -> {}
-            "÷" -> {}
-            "×" -> {}
-            "=" -> {}
-            else -> {
-
-            }
+        calculatorBrain.doOperation(displayText.toDouble())
+        if (calculatorBrain.accumulator % 1.0 == 0.0) {
+            displayText = "${calculatorBrain.accumulator.toInt()}"
+        }else{
+            displayText = "${calculatorBrain.accumulator}"
         }
+        calculatorBrain.operation = Operation.getOperation(op)
+        userIsInTheMiddleOfIntroduction = false
+    }
 
-        operand = displayText.toDouble()
-        operation = op
+    val opUnaryPressed : (String)-> Unit = { op ->
+
+        calculatorBrain.operation = Operation.getOperation(op)
+        calculatorBrain.doOperation(displayText.toDouble())
+        if (calculatorBrain.accumulator % 1.0 == 0.0) {
+            displayText = "${calculatorBrain.accumulator.toInt()}"
+        }else{
+            displayText = "${calculatorBrain.accumulator}"
+        }
 
         userIsInTheMiddleOfIntroduction = false
     }
@@ -92,26 +93,30 @@ fun CalculatorView(
             CalcButton(
                 modifier = Modifier.weight(1f),
                 label = "C",
-                onButtonPressed = opPressed,
+                onButtonPressed = {
+                    calculatorBrain.accumulator = 0.0
+                    calculatorBrain.operation = null
+                    displayText = "0"
+                },
                 isOperation = true
             )
             CalcButton(
                 modifier = Modifier.weight(1f),
-                label = "E",
-                onButtonPressed = opPressed,
+                label = Operation.SIGNAL.op,
+                onButtonPressed = opUnaryPressed,
                 isOperation = true
             )
             CalcButton(
                 modifier = Modifier.weight(1f),
-                label = "√",
-                onButtonPressed = opPressed,
+                label = Operation.SQRT.op,
+                onButtonPressed = opUnaryPressed,
                 isOperation = true
             )
             CalcButton(
                 modifier = Modifier.weight(1f),
                 label = "%",
                 isOperation = true,
-                onButtonPressed = opPressed,
+                onButtonPressed = opUnaryPressed,
             )
         }
         Row(modifier = Modifier.weight(1f)){
@@ -197,7 +202,10 @@ fun CalculatorView(
             CalcButton(
                 modifier = Modifier.weight(1f),
                 label = "=",
-                onButtonPressed = opPressed,
+                onButtonPressed = {
+                    opPressed("=")
+                    calculatorBrain.operation = null
+                },
                 isOperation = true
             )
             CalcButton(
