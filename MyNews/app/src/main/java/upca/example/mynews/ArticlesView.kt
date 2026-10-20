@@ -2,6 +2,7 @@ package upca.example.mynews
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -31,21 +34,14 @@ import java.util.Date
 @Composable
 fun ArticlesView(
     modifier: Modifier = Modifier
-
 ){
     val viewModel : ArticlesViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
 
-
-    if (uiState.error!=null) {
-        Text(uiState.error!!)
-    }else {
-        ArticlesViewContent(
-            modifier = modifier,
-            articles = uiState.articles
-        )
-    }
-
+    ArticlesViewContent(
+        modifier = modifier,
+        uiState = uiState
+    )
 
     LaunchedEffect(Unit) {
         viewModel.fetchArticles()
@@ -54,62 +50,61 @@ fun ArticlesView(
 @Composable
 fun ArticlesViewContent(
     modifier: Modifier = Modifier,
-    articles: List<Article> = arrayListOf()
+    uiState : ArticlesViewState = ArticlesViewState(),
 ){
-
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        itemsIndexed(
-            items = articles
-        ){ index, article->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.inversePrimary)
-            ) {
-                Text(article.title ?: "",
-                    style = MaterialTheme.typography.titleLarge,
-                    )
-                Text(article.description ?: "",
-                    style = MaterialTheme.typography.bodyLarge)
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "article image"
-                )
-                Text(article.publishedAt?.toString() ?: "")
+        when {
+            uiState.isLoading -> {
+                CircularProgressIndicator()
+            }
+            uiState.error != null -> {
+                Text(text = uiState.error)
+            }
+            else -> {
+                LazyColumn {
+                    itemsIndexed(
+                        items = uiState.articles
+                    ) { index, article ->
+                        ArticleRowView(article = article)
+                    }
+                }
             }
         }
-
     }
+
+
 
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ArticlesViewPreview(){
+fun ArticlesViewPreview() {
     MyNewsTheme() {
         ArticlesViewContent(
-            articles = arrayListOf<Article>(
-            Article(
-                title = "Aulas de Computação Móvel",
-                description = "fdjkhwk ehf wkehfkwefh kwuef",
-                publishedAt = Date()
-            ),
-            Article(
-                title = "Escandalo, o Braga foi roubado frente ao Sporting",
-                description = "fdjkhwk ehf wkehfkwefh kwuef",
-                publishedAt = Date()
-            ),
-            Article(
-                title = "Escandalo, o Ronaldo quer voltar à selecção",
-                description = "fdjkhwk ehf wkehfkwefh kwuef",
-                publishedAt = Date()
+            uiState = ArticlesViewState(
+                articles = arrayListOf<Article>(
+                    Article(
+                        title = "Aulas de Computação Móvel",
+                        description = "fdjkhwk ehf wkehfkwefh kwuef",
+                        publishedAt = Date()
+                    ),
+                    Article(
+                        title = "Escandalo, o Braga foi roubado frente ao Sporting",
+                        description = "fdjkhwk ehf wkehfkwefh kwuef",
+                        publishedAt = Date()
+                    ),
+                    Article(
+                        title = "Escandalo, o Ronaldo quer voltar à selecção",
+                        description = "fdjkhwk ehf wkehfkwefh kwuef",
+                        publishedAt = Date()
+                    )
+                ),
+                error = null,
+                isLoading = true
             )
-        )
         )
     }
 }

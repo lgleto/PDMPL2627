@@ -1,5 +1,6 @@
 package upca.example.mynews
 
+import org.json.JSONObject
 import java.util.Date
 
 class Article (
@@ -8,4 +9,16 @@ class Article (
     var url : String? = null,
     var urlToImage : String? = null,
     var publishedAt : Date? = null,
-)
+){
+    companion object{
+        fun fromJson(articleJson : JSONObject) : Article {
+            return Article(
+                title = articleJson.getString("title"),
+                description = articleJson.getString("description"),
+                url = articleJson.getString("url"),
+                urlToImage = articleJson.getString("urlToImage"),
+                publishedAt = articleJson.getString("publishedAt").dateFromServer(),
+            )
+        }
+    }
+}

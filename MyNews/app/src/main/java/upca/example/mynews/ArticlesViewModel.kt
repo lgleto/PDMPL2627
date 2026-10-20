@@ -53,14 +53,7 @@ class ArticlesViewModel : ViewModel() {
                             val articlesResult = arrayListOf<Article>()
                             for ( index in 0..<articlesJson.length()){
                                 val articleJson = articlesJson.getJSONObject(index)
-                                val article = Article(
-                                    title = articleJson.getString("title"),
-                                    description = articleJson.getString("description"),
-                                    url = articleJson.getString("url"),
-                                    urlToImage = articleJson.getString("urlToImage"),
-                                    publishedAt = Date() //articleJson.getString("publishedAt"),
-                                )
-                                articlesResult.add(article)
+                                articlesResult.add(Article.fromJson(articleJson))
                             }
                             _uiState.value = _uiState.value.copy(
                                 articles = articlesResult,
@@ -76,9 +69,7 @@ class ArticlesViewModel : ViewModel() {
                     }
                 }
             }
-
         })
     }
-
 
 }
