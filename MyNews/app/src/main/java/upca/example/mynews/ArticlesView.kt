@@ -2,6 +2,7 @@ package upca.example.mynews
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,19 +29,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import upca.example.mynews.ui.theme.MyNewsTheme
 import java.util.Date
 
 @Composable
 fun ArticlesView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController : NavController = rememberNavController()
 ){
     val viewModel : ArticlesViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     ArticlesViewContent(
         modifier = modifier,
-        uiState = uiState
+        uiState = uiState,
+        navController = navController
     )
 
     LaunchedEffect(Unit) {
@@ -51,6 +56,7 @@ fun ArticlesView(
 fun ArticlesViewContent(
     modifier: Modifier = Modifier,
     uiState : ArticlesViewState = ArticlesViewState(),
+    navController : NavController = rememberNavController()
 ){
     Box(
         modifier = modifier.fillMaxSize(),
@@ -68,7 +74,14 @@ fun ArticlesViewContent(
                     itemsIndexed(
                         items = uiState.articles
                     ) { index, article ->
-                        ArticleRowView(article = article)
+                        ArticleRowView(
+                            modifier = Modifier.clickable{
+                                navController.navigate(Screen.ArticleDetail.route
+                                    .replace("{title}", article.title?:"no title")
+                                    .replace("{url}", article.url?.encodeURL()?:"no url"))
+                            },
+                            article = article
+                        )
                     }
                 }
             }
