@@ -1,4 +1,4 @@
-package upca.example.mynews
+package upca.example.mynews.helpers
 
 import java.net.URLDecoder
 import java.net.URLEncoder

@@ -1,4 +1,4 @@
-package upca.example.mynews
+package upca.example.mynews.ui.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -11,6 +11,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import upca.example.mynews.R
 import upca.example.mynews.ui.theme.MyNewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,6 +1,5 @@
-package upca.example.mynews
+package upca.example.mynews.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import upca.example.mynews.R
+import upca.example.mynews.helpers.toShortDateTime
+import upca.example.mynews.models.Article
 import upca.example.mynews.ui.theme.MyNewsTheme
 import java.util.Date
 
@@ -63,7 +65,7 @@ fun ArticleRowView(
                 contentDescription = "image article",
                 contentScale = ContentScale.Crop
             )
-            Text((article.publishedAt ?: java.util.Date()).toShortDateTime(),
+            Text((article.publishedAt ?: Date()).toShortDateTime(),
                 modifier = Modifier
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp))

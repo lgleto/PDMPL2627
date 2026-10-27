@@ -1,6 +1,7 @@
-package upca.example.mynews
+package upca.example.mynews.models
 
 import org.json.JSONObject
+import upca.example.mynews.helpers.dateFromServer
 import java.util.Date
 
 class Article (
