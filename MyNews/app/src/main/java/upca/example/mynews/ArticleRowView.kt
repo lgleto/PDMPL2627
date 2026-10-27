@@ -2,16 +2,21 @@ package upca.example.mynews
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -28,29 +33,47 @@ fun ArticleRowView(
             .fillMaxWidth()
             .padding(8.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.inversePrimary)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(8.dp)
     ) {
         Text(
             article.title ?: "",
             style = MaterialTheme.typography.titleLarge,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
         Text(
             article.description ?: "",
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.secondary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
-        article.urlToImage?.let {
+        Box(
+            contentAlignment = Alignment.BottomEnd
+        ) {
             AsyncImage(
-                model = it,
-                contentDescription = "article image"
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.onTertiary)
+                    .height(200.dp),
+                placeholder = painterResource(R.drawable.ic_launcher_foreground),
+                model = article.urlToImage ?: "no image",
+                contentDescription = "image article",
+                contentScale = ContentScale.Crop
             )
-        }?:run {
-            Image(
-                painter = painterResource(R.drawable.ic_launcher_foreground),
-                contentDescription = "article image"
+            Text((article.publishedAt ?: java.util.Date()).toShortDateTime(),
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.onPrimary)
+                    .padding(2.dp)
+                    .padding(horizontal = 4.dp)
             )
         }
-        Text(article.publishedAt?.toShortDateTime()?:"")
     }
+
 }
 
 @Preview(showBackground = true)
