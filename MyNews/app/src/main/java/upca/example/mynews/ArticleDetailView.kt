@@ -23,17 +23,12 @@ import java.util.Date
 @Composable
 fun ArticleDetailView(
     modifier: Modifier = Modifier,
-    title : String?,
     url : String?,
 ){
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
-        Text(
-            title ?: "",
-            style = MaterialTheme.typography.titleLarge,
-        )
         AndroidView(
             modifier = Modifier
                 .fillMaxSize(),
@@ -59,7 +54,6 @@ fun ArticleDetailView(
 fun ArticleDetailViewPreview() {
     MyNewsTheme {
         ArticleDetailView(
-            title = "Aulas de Computação Móvel",
             url = "https://ipca.pt"
         )
     }
