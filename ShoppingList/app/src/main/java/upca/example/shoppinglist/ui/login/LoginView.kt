@@ -61,7 +61,7 @@ fun LoginView(
             modifier = Modifier.padding(8.dp),
             onClick = {
                 viewModel.login(){
-                    //navController.navigate("home")
+                    navController.navigate("home")
                 }
             }){
             Text("Login")

@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import upca.example.shoppinglist.TAG
+import upca.example.shoppinglist.models.User
 
 
 data class LoginState (
@@ -32,10 +34,6 @@ class LoginViewModel : ViewModel() {
     }
 
     fun login(onSuccess : () -> Unit){
-        val auth = Firebase.auth
-
-        _uiState.value = _uiState.value.copy(isLoading = true)
-
         if (_uiState.value.email.isNullOrEmpty()) {
             _uiState.value = _uiState.value.copy(
                 isLoading = false,
@@ -50,6 +48,8 @@ class LoginViewModel : ViewModel() {
             return
         }
 
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        val auth = Firebase.auth
         auth.signInWithEmailAndPassword(
             _uiState.value.email!!,
             _uiState.value.password!!)
@@ -62,7 +62,25 @@ class LoginViewModel : ViewModel() {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false
                     )
-                    onSuccess()
+                    val db = Firebase.firestore
+
+                    val userDoc = User(
+                        name =  user?.displayName,
+                        email = user?.email,
+                        id = user?.uid
+                    )
+                    /*
+                    val userDoc = hashMapOf(
+                        "name" to user?.displayName,
+                        "email" to user?.email,
+                        "id" to user?.uid,
+                    )
+                    */
+
+                    db.collection("users")
+                        .document(user?.uid!!)
+                        .set(userDoc)
+                       onSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
