@@ -1,6 +1,6 @@
 # Sumários — Programação de Dispositivos Móveis
 
-Ano letivo 2026/2027. Período de 15 de setembro a 27 de outubro de 2026.
+Ano letivo 2026/2027. Período de 15 de setembro a 10 de novembro de 2026.
 
 ## Horário
 **terça-feira**: 18h-20h
@@ -34,60 +34,72 @@ Ano letivo 2026/2027. Período de 15 de setembro a 27 de outubro de 2026.
 
 ## 29/09/2026 — terça-feira (18h-20h)
 
-**Título:** Layout em grelha e componente de botão
+**Título:** Layout em grelha e componente reutilizável
 
-**Descrição:** Calculadora em Jetpack Compose. Grelha com `Column` e `Row`, distribuição do espaço com pesos e espaçamento. Botão reutilizável com o tema Material para distinguir dígitos e operações.
+**Descrição:** Grelha com `Column` e `Row`. Distribuição do espaço com pesos e espaçamento. Componente reutilizável, com cor do tema Material distinta para ações diferentes.
 
 ## 29/09/2026 — terça-feira (20h-22h)
 
-**Título:** Estado do visor e introdução de operações
+**Título:** Estado do ecrã e introdução de valores
 
-**Descrição:** Estado do visor, do operando e da operação pendente. Introdução de dígitos e do separador decimal. Primeira operação binária, ainda tratada na interface, e reposição do modo de introdução após cada operador.
+**Descrição:** Vários estados no mesmo ecrã: valor apresentado, valor em espera e operação pendente. Introdução de dígitos e do separador decimal. Primeira operação binária ainda tratada na interface, e reposição do modo de introdução após cada operador.
 
 ## 06/10/2026 — terça-feira (18h-20h)
 
-**Título:** Separação entre interface e lógica de negócio
+**Título:** Separação entre interface e lógica
 
-**Descrição:** Extração da lógica da calculadora para `CalculatorBrain`. Enumerado para representar as operações. A interface passa a delegar o cálculo e a limitar-se ao estado apresentado.
+**Descrição:** Extração da lógica para uma classe independente da interface. Enumerado para um conjunto fechado de operações, com propriedades e `when`. A interface delega o cálculo e limita-se ao estado que apresenta.
 
 ## 06/10/2026 — terça-feira (20h-22h)
 
-**Título:** Operações binárias, unárias e reposição
+**Título:** Operações binárias, unárias e reposição do estado
 
-**Descrição:** Operações binárias e unárias: soma, subtração, multiplicação, divisão, raiz quadrada, percentagem e troca de sinal. Igualdade, limpeza do acumulador e reposição do visor.
+**Descrição:** Operações binárias e unárias: soma, subtração, multiplicação, divisão, raiz quadrada, percentagem e troca de sinal. Igualdade, limpeza do acumulador e reposição do estado apresentado.
 
 ## 13/10/2026 — terça-feira (18h-20h)
 
-**Título:** Listas lazy e modelo de artigo
+**Título:** Listas lazy e modelo de dados
 
-**Descrição:** Modelo de dados de um artigo. Apresentação de uma coleção com `LazyColumn`, compondo cada elemento a partir do título, da descrição e da data.
+**Descrição:** Modelo de dados com `data class`. Apresentação de uma coleção com `LazyColumn`, compondo cada elemento a partir dos campos do modelo.
 
 ## 13/10/2026 — terça-feira (20h-22h)
 
 **Título:** Pedidos HTTP, ViewModel e estado da interface
 
-**Descrição:** Pedidos HTTP e interpretação de respostas JSON. Arquitetura com `ViewModel`, `StateFlow` e atualização do ecrã a partir do estado. Exposição dos artigos, do estado de carregamento e dos erros.
+**Descrição:** Pedidos HTTP e interpretação de respostas JSON. Arquitetura com `ViewModel`, `StateFlow` e atualização do ecrã a partir do estado. Exposição da coleção, do estado de carregamento e dos erros.
 
 ## 20/10/2026 — terça-feira (18h-20h)
 
 **Título:** Imagens remotas e formatação de datas
 
-**Descrição:** Linha de artigo com imagem remota e imagem de recurso quando o endereço não existe. Formatação da data de publicação recebida do servidor.
+**Descrição:** Carregamento de uma imagem a partir de um endereço, com imagem de recurso quando o endereço não existe. Formatação de uma data recebida do servidor, com funções de extensão.
 
 ## 20/10/2026 — terça-feira (20h-22h)
 
 **Título:** WebView e navegação com argumentos
 
-**Descrição:** Visualização da notícia numa `WebView`. Navegação entre a lista e o detalhe, com o título e o endereço passados como argumentos da rota.
+**Descrição:** Apresentação de um endereço numa `WebView`. Navegação entre lista e detalhe, com valores passados como argumentos da rota.
 
 ## 27/10/2026 — terça-feira (18h-20h)
 
 **Título:** Tema Material 3, barra superior e partilha
 
-**Descrição:** Tema Material 3 com paletas para modo claro e modo escuro. Barra superior, regresso na pilha de ecrãs e `Intent` implícito para partilhar o título e o endereço da notícia.
+**Descrição:** Tema Material 3 com paletas para modo claro e modo escuro. Barra superior e regresso na pilha de ecrãs. `Intent` implícito para partilhar texto.
 
 ## 27/10/2026 — terça-feira (20h-22h)
 
 **Título:** Navegação inferior e autenticação
 
-**Descrição:** Organização do código em pacotes por responsabilidade. Barra de navegação inferior e destinos que filtram as notícias por categoria. Novo exemplo com ecrã de autenticação: `ViewModel`, validação de email e palavra-passe, e início de sessão com Firebase Authentication.
+**Descrição:** Organização do código em pacotes por responsabilidade. Barra de navegação inferior e destinos que filtram uma coleção. Ecrã de autenticação com `ViewModel`, validação de email e palavra-passe, e início de sessão com Firebase Authentication.
+
+## 10/11/2026 — terça-feira (18h-20h)
+
+**Título:** Modelos no Cloud Firestore e escuta em tempo real
+
+**Descrição:** Modelos com `data class` mapeados para documentos. Gravação de um documento depois do início de sessão. Escuta de uma coleção com `addSnapshotListener`, consulta com `whereArrayContains` e exposição do carregamento e da lista vazia num `StateFlow`.
+
+## 10/11/2026 — terça-feira (20h-22h)
+
+**Título:** Subcoleções, atualização de campos e navegação
+
+**Descrição:** Rotas com `sealed class` e argumentos. Criação de documentos numa coleção e numa subcoleção. Atualização de um campo de um documento. Barra superior com regresso na pilha e término de sessão.

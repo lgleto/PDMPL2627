@@ -14,7 +14,7 @@ O código segue os padrões de Kotlin usados nas aulas, em vez de equivalentes d
 - Enumerados com propriedades e `when`, para as operações da calculadora.
 - `data class` para o estado do ecrã e para os modelos.
 - `sealed class` para as rotas de navegação.
-- Lambdas e tipos função nos eventos dos botões e nos pedidos assíncronos.
+- Lambdas e tipos função nos eventos dos botões, nos pedidos assíncronos e nos ouvintes do Firestore.
 - Parâmetros com valor por omissão e cadeias de caracteres com modelo.
 
 | Exemplo | O que mostra | Aulas |
@@ -22,7 +22,7 @@ O código segue os padrões de Kotlin usados nas aulas, em vez de equivalentes d
 | [HelloWorld](HelloWorld) | `Scaffold`, estado e evento de clique | 22/09 |
 | [Calculator](Calculator) | Grelha, botão reutilizável e `CalculatorBrain` | 29/09 e 06/10 |
 | [MyNews](MyNews) | Lista, HTTP, `ViewModel`, imagens, `WebView`, tema e barras | 13/10, 20/10 e 27/10, 18h–20h |
-| [ShoppingList](ShoppingList) | Ecrã de autenticação com Firebase | 27/10, 20h–22h |
+| [ShoppingList](ShoppingList) | Autenticação, Firestore, carrinhos e produtos | 27/10, 20h–22h e 10/11 |
 
 ## HelloWorld
 
@@ -50,7 +50,15 @@ Aplicação de notícias que junta as aulas de listas, rede, navegação e tema.
 
 ## ShoppingList
 
-Ecrã de início de sessão. `LoginView` lê o email e a palavra-passe. `LoginViewModel` guarda esse estado num `StateFlow`, valida os campos e autentica com Firebase Authentication.
+Lista de compras com Firebase Authentication e Cloud Firestore. O código está organizado por pacotes (`ui/login`, `ui/home`, `ui/home/kart`, `ui/components`, `models`).
+
+- `LoginView` lê o email e a palavra-passe. `LoginViewModel` valida os campos, autentica com Firebase Authentication e grava o utilizador na coleção `users`.
+- `MainActivity` abre o ecrã inicial conforme exista sessão e declara as rotas numa `sealed class`.
+- `HomeView` lista os carrinhos. `HomeViewModel` escuta a coleção `karts` e fica apenas com aqueles em que o identificador do utilizador está em `userIds`.
+- `AddKartView` cria um carrinho com o nome indicado e o identificador do utilizador.
+- `KartView` escuta o carrinho e a subcoleção `products`. `ProductViewRow` mostra o nome, a quantidade e a caixa de verificação.
+- `AddProductView` acrescenta um produto com nome e quantidade. Marcar a caixa atualiza o campo `checked` no Firestore.
+- `MyTopBar` volta atrás na pilha e, no ecrã inicial, termina a sessão.
 
 ## Licença
 
